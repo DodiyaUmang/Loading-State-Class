@@ -1,0 +1,36 @@
+sealed class LoadingStatus<out T> {
+    data object Loading : LoadingStatus<Nothing>()
+    data class Success<T>(val data: T) : LoadingStatus<T>()
+    data class Error(val throwable: Throwable) : LoadingStatus<Nothing>()
+}
+
+#### For Activity ####
+  viewModel.stateViewModel.observe(this) {
+            when (it) {
+                is LoadingStatus.Loading -> {
+                }
+
+                is LoadingStatus.Success -> {
+                    languageAdapter.submitList(it.data.languageList)
+                }
+
+                is LoadingStatus.Error -> {
+                }
+            }
+        }
+
+
+#### For Fragment ####
+  viewModel.stateViewModel.observe(viewLifecycleOwner) {
+            when (it) {
+                is LoadingStatus.Loading -> {
+                }
+
+                is LoadingStatus.Success -> {
+                    folderAdapter.submitList(it.data.audioDirectories)
+                }
+
+                is LoadingStatus.Error -> {
+                }
+            }
+        }
